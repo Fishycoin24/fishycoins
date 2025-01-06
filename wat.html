@@ -6,154 +6,29 @@
     <title>TON Wallet Connection</title>
     <link rel="stylesheet" href="material/css/w.css">
 </head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
 
-        #balance-container {
-            margin: 20px;
-            font-size: 18px;
-        }
-
-        .withdraw-section {
-            margin: 20px auto;
-            max-width: 400px;
-            background-color: #333;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .withdraw-button {
-            background-color: #ffffff;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .withdraw-button:hover {
-            background-color: #a2aaa0;
-        }
-
-        .status {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #ffcc00;
-        }
-
-        nav.bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #333;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        nav.bottom-nav a {
-            color: #fff;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        nav.bottom-nav a span {
-            display: block;
-            font-size: 12px;
-        }
-    </style>
-</head>
 <body>
-    <div id="balance-container">
-        <h2>Your Fishy Coin Balance</h2>
-        <p>10,000 Fishy Coins = 1 USD</p>
-        <p><b>Balance:</b> <span id="balance">0</span> Fishy Coins (<span id="usd-balance">$0.00</span>)</p>
+
+    <!-- Open Wallet Pop-up Button -->
+    <button id="openModalBtn" class="open-button">Connect TON Wallet</button>
+   
+  
+    <!-- Modal Window -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Connect Your TON Wallet</h2>
+            <p>Please connect your Telegram TON wallet to continue.</p>
+
+            <div class="wallet-options">
+                <button id="connectWallet" class="wallet-btn">Connect Wallet</button>
+                <button id="cancelWallet" class="cancel-btn">Cancel</button>
+            </div>
+
+            <div id="statusMessage" class="status"></div>
+        </div>
     </div>
 
-    <div class="withdraw-section">
-        <h2>Withdraw Your Earnings</h2>
-        <input type="text" id="walletAddress" class="input-field" placeholder="Enter Binance TRC20/ERC20 Address">
-        <button id="withdrawButton" class="withdraw-button" disabled>Withdraw</button>
-        <div id="statusMessage" class="status"></div>
-    </div>
-
-    <nav class="bottom-nav">
-        <a href="home.html">
-            <i class="fas fa-home"></i>
-            <span>HOME</span>
-        </a>
-        <a href="leaderboard.html">
-            <i class="fas fa-trophy"></i>
-            <span>LEADERBOARD</span>
-        </a>
-        <a href="invite-friends.html">
-            <i class="fas fa-user-friends"></i>
-            <span>FRIENDS</span>
-        </a>
-        <a href="task.html">
-            <i class="fas fa-tasks"></i>
-            <span>TASKS</span>
-        </a>
-        <a href="balance.html">
-            <i class="fas fa-wallet"></i>
-            <span>BALANCE</span>
-        </a>
-    </nav>
-
-    <script>
-        let fishyCoins = 52000; // Example user balance
-        const conversionRate = 10000; // 10,000 Fishy Coins = 1 USD
-        const minWithdrawUSD = 5; // Minimum withdrawal amount in USD
-
-        function updateBalance() {
-            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
-            document.getElementById('balance').textContent = fishyCoins;
-            document.getElementById('usd-balance').textContent = `$${usdBalance}`;
-            document.getElementById('withdrawButton').disabled = usdBalance < minWithdrawUSD;
-        }
-
-        function withdrawFunds() {
-            const walletAddress = document.getElementById('walletAddress').value.trim();
-            if (!walletAddress) {
-                document.getElementById('statusMessage').textContent = 'Please enter a valid wallet address.';
-                return;
-            }
-
-            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
-            if (usdBalance >= minWithdrawUSD) {
-                document.getElementById('statusMessage').textContent = `Processing withdrawal of $${usdBalance} to ${walletAddress}...`;
-                setTimeout(() => {
-                    document.getElementById('statusMessage').textContent = 'Withdrawal successful! Funds sent to your wallet.';
-                    fishyCoins = 0; // Reset balance
-                    updateBalance();
-                }, 3000);
-            } else {
-                document.getElementById('statusMessage').textContent = 'Insufficient balance to withdraw.';
-            }
-        }
-
-        document.getElementById('withdrawButton').addEventListener('click', withdrawFunds);
-        updateBalance();
-    </script>
-     <script src="material/js/w.js"></script>
+    <script src="material/js/w.js"></script>
 </body>
 </html>
