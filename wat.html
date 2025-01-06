@@ -15,6 +15,11 @@
             padding: 0;
         }
 
+        #balance-container {
+            margin: 20px;
+            font-size: 18px;
+        }
+
         .withdraw-section {
             margin: 20px auto;
             max-width: 400px;
@@ -22,10 +27,6 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .withdraw-section h2 {
-            margin-bottom: 20px;
         }
 
         .input-field {
@@ -52,79 +53,96 @@
             background-color: #a2aaa0;
         }
 
-        .info {
-            font-size: 14px;
-            margin-top: 10px;
-            color: #ffcc00;
-        }
-
         .status {
             margin-top: 20px;
             font-size: 14px;
             color: #ffcc00;
         }
 
-        @media (max-width: 600px) {
-            .withdraw-button {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
+        nav.bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        nav.bottom-nav a {
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        nav.bottom-nav a span {
+            display: block;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
+    <div id="balance-container">
+        <h2>Your Fishy Coin Balance</h2>
+        <p>10,000 Fishy Coins = 1 USD</p>
+        <p><b>Balance:</b> <span id="balance">0</span> Fishy Coins (<span id="usd-balance">$0.00</span>)</p>
+    </div>
 
     <div class="withdraw-section">
         <h2>Withdraw Your Earnings</h2>
-        <p>10,000 Fishy Coins = 1 USD</p>
-        <p>Your Balance: <span id="balance">0</span> Fishy Coins (<span id="usd-balance">$0.00</span>)</p>
-
         <input type="text" id="walletAddress" class="input-field" placeholder="Enter Binance TRC20/ERC20 Address">
-
         <button id="withdrawButton" class="withdraw-button" disabled>Withdraw</button>
-
         <div id="statusMessage" class="status"></div>
     </div>
 
+    <nav class="bottom-nav">
+        <a href="home.html">
+            <i class="fas fa-home"></i>
+            <span>HOME</span>
+        </a>
+        <a href="leaderboard.html">
+            <i class="fas fa-trophy"></i>
+            <span>LEADERBOARD</span>
+        </a>
+        <a href="invite-friends.html">
+            <i class="fas fa-user-friends"></i>
+            <span>FRIENDS</span>
+        </a>
+        <a href="task.html">
+            <i class="fas fa-tasks"></i>
+            <span>TASKS</span>
+        </a>
+        <a href="balance.html">
+            <i class="fas fa-wallet"></i>
+            <span>BALANCE</span>
+        </a>
+    </nav>
+
     <script>
-        // Example balance (replace with actual logic to fetch user balance)
-        let fishyCoins = 52000; // User's balance in Fishy Coins
+        let fishyCoins = 52000; // Example user balance
         const conversionRate = 10000; // 10,000 Fishy Coins = 1 USD
         const minWithdrawUSD = 5; // Minimum withdrawal amount in USD
 
-        // Update balance display
         function updateBalance() {
             const usdBalance = (fishyCoins / conversionRate).toFixed(2);
             document.getElementById('balance').textContent = fishyCoins;
             document.getElementById('usd-balance').textContent = `$${usdBalance}`;
-
-            // Enable withdraw button if balance is >= $5
-            const withdrawButton = document.getElementById('withdrawButton');
-            if (usdBalance >= minWithdrawUSD) {
-                withdrawButton.disabled = false;
-            } else {
-                withdrawButton.disabled = true;
-            }
+            document.getElementById('withdrawButton').disabled = usdBalance < minWithdrawUSD;
         }
 
-        // Withdrawal function
         function withdrawFunds() {
             const walletAddress = document.getElementById('walletAddress').value.trim();
-
             if (!walletAddress) {
                 document.getElementById('statusMessage').textContent = 'Please enter a valid wallet address.';
                 return;
             }
 
             const usdBalance = (fishyCoins / conversionRate).toFixed(2);
-
             if (usdBalance >= minWithdrawUSD) {
-                document.getElementById('statusMessage').textContent = `Processing withdrawal of $${usdBalance} to ${walletAddress} via Binance TRC20/ERC20...`;
-
-                // Simulate API call for withdrawal
+                document.getElementById('statusMessage').textContent = `Processing withdrawal of $${usdBalance} to ${walletAddress}...`;
                 setTimeout(() => {
-                    document.getElementById('statusMessage').textContent = 'Withdrawal successful! Funds have been sent to your wallet.';
-                    fishyCoins = 0; // Reset balance after withdrawal
+                    document.getElementById('statusMessage').textContent = 'Withdrawal successful! Funds sent to your wallet.';
+                    fishyCoins = 0; // Reset balance
                     updateBalance();
                 }, 3000);
             } else {
@@ -132,10 +150,7 @@
             }
         }
 
-        // Attach event listener to withdraw button
         document.getElementById('withdrawButton').addEventListener('click', withdrawFunds);
-
-        // Initialize balance display
         updateBalance();
     </script>
 </body>
