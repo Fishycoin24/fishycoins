@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Tasks</title>
+    <title>Fishy Coin Withdrawal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="material/css/styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #000; 
-            color: #fff; 
+            background-color: #000;
+            color: #fff;
             margin: 0;
             padding: 0;
         }
@@ -21,156 +21,79 @@
             font-size: 18px;
         }
 
-        .task-container {
-            margin: 10px auto;
-            max-width: 600px;
-        }
-
-        .task {
-            margin: 10px auto;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #000000; 
-            border-radius: 12px;
-            background-color: #333030; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-            width: 80%;
-        }
-
-        .task:hover {
-            transform: translateY(-5px);
-        }
-
-        .task-detail {
-            display: flex;
-            align-items: center;
-        }
-
-        .task-image img {
-            border-radius: 8px;
-            margin-right: 10px;
-        }
-
-        .task h4 {
-            margin: 0;
-            font-size: 18px;
-            color: #f2f2f2;
-        }
-
-        .task-data {
-            display: flex;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .task-data img {
-            margin-right: 5px;
-        }
-
-        .task-data h5 {
-            margin: 0;
-            color: #ffcc00;
-            font-size: 18px;
-        }
-
-        .task-button {
-            background-color: #ffffff; 
-            color: rgb(0, 0, 0);
+        .withdraw-button {
+            background-color: #ffffff;
+            color: #000;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 8px;
             transition: background-color 0.3s ease;
+            display: none;
         }
 
-        .task-button:hover {
+        .withdraw-button:hover {
             background-color: #a2aaa0;
         }
 
-        @media (max-width: 600px) {
-            .task-container {
-                max-width: 100%;
-            }
+        .info {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
 
-            .task-button {
+        @media (max-width: 600px) {
+            .withdraw-button {
                 padding: 10px 15px;
                 font-size: 14px;
             }
-
-            .task h4 {
-                font-size: 16px;
-            }
-           
-            
         }
     </style>
 </head>
 <body>
-    <br>
+    <div id="balance-container">
+        <h2><b>💸 Your Balance</b></h2>
+        <span id="balance">0</span> Fishy Coins (<span id="usd-balance">$0.00</span>)
+        <div class="info">10,000 Fishy Coins = 1 USD</div>
+        <button id="withdraw-button" class="withdraw-button" onclick="withdrawFunds()">Withdraw to Binance</button>
+    </div>
 
-    <div id="balance-container"><h2><b>💸</b></h2><BR>
-        <span id="balance">0</span>  Your total 🐟 Fishy Coin
-        <br>    <br>
-    </div><h2><b>Comming soon !!</b></h2>
-   
-    
-    <br>
-       
-        <a href="detail.html" class="nav-item"> 
-            <i class="fas fa-info-circle"></i> 
-            
-           <span>DETAILS</span>
-        </a>
-        
-       <BR>
-    <div class="task-container">
-        <div class="task">
-            <div class="task-detail">
-                <div class="task-image">
-                    <img src="material/images/ton.png" width="45px" alt="">
-                </div>
-                <div>
-                    <h4>Link your wallet </h4>
-                    <div class="task-data">
-                        <img src="material/images/logo.png" width="20px" alt="Coin Icon">
-                        <h5>💳</h5>
-                    </div>
-                </div>
-            </div>
-           <button onclick="window.location.href='wat.html'">CONNECT</button>
-            
+    <script>
+        // Example balance (replace with actual logic to fetch user balance)
+        let fishyCoins = 52000; // User's balance in Fishy Coins
+        const conversionRate = 10000; // 10,000 Fishy Coins = 1 USD
+        const minWithdrawUSD = 5; // Minimum withdrawal amount in USD
 
-        </div>
-        <br> <br>
-        <img src="material/images/logo.png" width="50%">
-                <nav class="bottom-nav">
-            <a href="home.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                <span>HOME</span>
-            </a>
-            <a href="leaderboard.html" class="nav-item">
-                <i class="fas fa-trophy"></i>
-                <span>LEADERBOARD</span>
-            </a>
-            <a href="invite-friends.html" class="nav-item">
-                <i class="fas fa-user-friends"></i>
-                <span>FRIENDS</span>
-            </a>
-            <a href="task.html" class="nav-item">
-                <i class="fas fa-tasks"></i>
-                <span>TASKS</span>
-            </a>
-            <a href="balance.html" class="nav-item">
-                <i class="fas fa-wallet"></i>
-                <span>BALANCE</span>
-            </a>
-        </nav>
+        // Update balance display
+        function updateBalance() {
+            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
+            document.getElementById('balance').textContent = fishyCoins;
+            document.getElementById('usd-balance').textContent = `$${usdBalance}`;
 
-    <script src="material/js/js.js"></script>
-    <script src="material/js/main.js"></script>
+            // Enable withdraw button if balance is >= $5
+            const withdrawButton = document.getElementById('withdraw-button');
+            if (usdBalance >= minWithdrawUSD) {
+                withdrawButton.style.display = 'inline-block';
+            } else {
+                withdrawButton.style.display = 'none';
+            }
+        }
+
+        // Withdrawal function
+        function withdrawFunds() {
+            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
+
+            if (usdBalance >= minWithdrawUSD) {
+                alert(`Withdrawing $${usdBalance} to Binance via TRC20 or ERC20.`);
+                // Add withdrawal logic here (e.g., API call to process the withdrawal)
+            } else {
+                alert('Insufficient balance to withdraw.');
+            }
+        }
+
+        // Initialize balance display
+        updateBalance();
+    </script>
 </body>
 </html>
