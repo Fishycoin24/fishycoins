@@ -7,13 +7,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="material/css/styles.css">
     <link rel="stylesheet" href="material/css/st.css">
+    <style>
+        .referral-container {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .referral-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .referral-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .referral-list li {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
     <div class="frens-invite">
-        <div class="frens-invite-button">
-            <!-- Dynamic referral link -->
-            <input type="text" id="referralLink" readonly>
+        <div class="frens-invite-button referral-container">
+            <p>Your unique referral link:</p>
+            <input type="text" value="" id="referralLink" readonly>
             <button id="copyButton">Copy Link</button>
+
+            <div class="referral-list">
+                <h3>Referred Friends:</h3>
+                <ul id="referredFriends">
+                    <!-- Referred user IDs will be dynamically added here -->
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -41,27 +68,31 @@
     </nav>
 
     <script>
-        // Example user data (replace this with actual user data fetched from your backend)
-        const user = {
-            id: 12345, // Unique user ID
-            username: "john_doe" // Username
-        };
+        // Simulating user ID (in real implementation, fetch this from backend)
+        const userId = "12345"; // Replace with dynamic user ID
+        const referralBaseURL = "https://t.me/fishycion_bot?ref=";
 
-        // Generate the custom referral link
-        const referralBaseUrl = "https://t.me/fishycoin_bot";
-        const referralLink = `${referralBaseUrl}?ref=${user.id}`;
-        
-        // Update the referral link input
+        // Generate referral link
+        const referralLink = `${referralBaseURL}${userId}`;
         document.getElementById("referralLink").value = referralLink;
 
-        // Copy referral link to clipboard functionality
+        // Copy referral link to clipboard
         document.getElementById("copyButton").addEventListener("click", () => {
             const linkInput = document.getElementById("referralLink");
             linkInput.select();
-            linkInput.setSelectionRange(0, 99999); // For mobile devices
             document.execCommand("copy");
-
             alert("Referral link copied to clipboard!");
+        });
+
+        // Simulating referred friends (in real implementation, fetch this from backend)
+        const referredFriends = ["67890", "11223", "33445"]; // Replace with dynamic data
+
+        // Populate referred friends list
+        const referredFriendsList = document.getElementById("referredFriends");
+        referredFriends.forEach(friendId => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `User ID: ${friendId}`;
+            referredFriendsList.appendChild(listItem);
         });
     </script>
 
