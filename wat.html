@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TON Wallet Connection</title>
-    <link rel="stylesheet" href="material/css/w.css">
+    <title>Fishy Coin Withdrawal</title>
+    <link rel="stylesheet" href="material/css/styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,59 +15,29 @@
             padding: 0;
         }
 
-        .open-button {
-            background-color: #ffffff;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .open-button:hover {
-            background-color: #a2aaa0;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .modal-content {
-            background-color: #333;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 12px;
-            width: 80%;
+        .withdraw-section {
+            margin: 20px auto;
             max-width: 400px;
-            color: #fff;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+        .withdraw-section h2 {
+            margin-bottom: 20px;
         }
 
-        .close-btn:hover,
-        .close-btn:focus {
-            color: #fff;
-            text-decoration: none;
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
         }
 
-        .wallet-btn, .cancel-btn {
+        .withdraw-button {
             background-color: #ffffff;
             color: #000;
             border: none;
@@ -75,12 +45,17 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 8px;
-            margin: 10px;
             transition: background-color 0.3s ease;
         }
 
-        .wallet-btn:hover, .cancel-btn:hover {
+        .withdraw-button:hover {
             background-color: #a2aaa0;
+        }
+
+        .info {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #ffcc00;
         }
 
         .status {
@@ -88,67 +63,80 @@
             font-size: 14px;
             color: #ffcc00;
         }
+
+        @media (max-width: 600px) {
+            .withdraw-button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
-
 <body>
 
-    <!-- Open Wallet Pop-up Button -->
-    <button id="openModalBtn" class="open-button">Connect TON Wallet</button>
+    <div class="withdraw-section">
+        <h2>Withdraw Your Earnings</h2>
+        <p>10,000 Fishy Coins = 1 USD</p>
+        <p>Your Balance: <span id="balance">0</span> Fishy Coins (<span id="usd-balance">$0.00</span>)</p>
 
-    <!-- Modal Window -->
-    <div id="walletModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Connect Your TON Wallet</h2>
-            <p>Please connect your Telegram TON wallet to continue.</p>
+        <input type="text" id="walletAddress" class="input-field" placeholder="Enter Binance TRC20/ERC20 Address">
 
-            <div class="wallet-options">
-                <button id="connectWallet" class="wallet-btn">Connect Wallet</button>
-                <button id="cancelWallet" class="cancel-btn">Cancel</button>
-            </div>
+        <button id="withdrawButton" class="withdraw-button" disabled>Withdraw</button>
 
-            <div id="statusMessage" class="status"></div>
-        </div>
+        <div id="statusMessage" class="status"></div>
     </div>
 
     <script>
-        // Modal logic
-        const openModalBtn = document.getElementById('openModalBtn');
-        const walletModal = document.getElementById('walletModal');
-        const closeModalBtn = document.querySelector('.close-btn');
-        const cancelWalletBtn = document.getElementById('cancelWallet');
-        const connectWalletBtn = document.getElementById('connectWallet');
-        const statusMessage = document.getElementById('statusMessage');
+        // Example balance (replace with actual logic to fetch user balance)
+        let fishyCoins = 52000; // User's balance in Fishy Coins
+        const conversionRate = 10000; // 10,000 Fishy Coins = 1 USD
+        const minWithdrawUSD = 5; // Minimum withdrawal amount in USD
 
-        // Open modal
-        openModalBtn.addEventListener('click', () => {
-            walletModal.style.display = 'block';
-        });
+        // Update balance display
+        function updateBalance() {
+            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
+            document.getElementById('balance').textContent = fishyCoins;
+            document.getElementById('usd-balance').textContent = `$${usdBalance}`;
 
-        // Close modal
-        closeModalBtn.addEventListener('click', () => {
-            walletModal.style.display = 'none';
-        });
-
-        cancelWalletBtn.addEventListener('click', () => {
-            walletModal.style.display = 'none';
-        });
-
-        // Connect wallet simulation
-        connectWalletBtn.addEventListener('click', () => {
-            statusMessage.textContent = 'Connecting to your TON wallet...';
-            setTimeout(() => {
-                statusMessage.textContent = 'Wallet connected successfully!';
-            }, 2000);
-        });
-
-        // Close modal if clicked outside of content
-        window.addEventListener('click', (event) => {
-            if (event.target === walletModal) {
-                walletModal.style.display = 'none';
+            // Enable withdraw button if balance is >= $5
+            const withdrawButton = document.getElementById('withdrawButton');
+            if (usdBalance >= minWithdrawUSD) {
+                withdrawButton.disabled = false;
+            } else {
+                withdrawButton.disabled = true;
             }
-        });
+        }
+
+        // Withdrawal function
+        function withdrawFunds() {
+            const walletAddress = document.getElementById('walletAddress').value.trim();
+
+            if (!walletAddress) {
+                document.getElementById('statusMessage').textContent = 'Please enter a valid wallet address.';
+                return;
+            }
+
+            const usdBalance = (fishyCoins / conversionRate).toFixed(2);
+
+            if (usdBalance >= minWithdrawUSD) {
+                document.getElementById('statusMessage').textContent = `Processing withdrawal of $${usdBalance} to ${walletAddress} via Binance TRC20/ERC20...`;
+
+                // Simulate API call for withdrawal
+                setTimeout(() => {
+                    document.getElementById('statusMessage').textContent = 'Withdrawal successful! Funds have been sent to your wallet.';
+                    fishyCoins = 0; // Reset balance after withdrawal
+                    updateBalance();
+                }, 3000);
+            } else {
+                document.getElementById('statusMessage').textContent = 'Insufficient balance to withdraw.';
+            }
+        }
+
+        // Attach event listener to withdraw button
+        document.getElementById('withdrawButton').addEventListener('click', withdrawFunds);
+
+        // Initialize balance display
+        updateBalance();
     </script>
 </body>
 </html>
