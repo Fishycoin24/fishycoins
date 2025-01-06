@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="material/css/st.css">
 </head>
 <body>
-    
-
     <div class="frens-invite">
         <div class="frens-invite-button">
-            <input type="text" value="https://t.me/fishycoin_bot" id="link" readonly>
+            <!-- Dynamic referral link -->
+            <input type="text" id="referralLink" readonly>
             <button id="copyButton">Copy Link</button>
         </div>
     </div>
@@ -40,6 +39,32 @@
             <span>BALANCE</span>
         </a>
     </nav>
+
+    <script>
+        // Example user data (replace this with actual user data fetched from your backend)
+        const user = {
+            id: 12345, // Unique user ID
+            username: "john_doe" // Username
+        };
+
+        // Generate the custom referral link
+        const referralBaseUrl = "https://t.me/fishycoin_bot";
+        const referralLink = `${referralBaseUrl}?ref=${user.id}`;
+        
+        // Update the referral link input
+        document.getElementById("referralLink").value = referralLink;
+
+        // Copy referral link to clipboard functionality
+        document.getElementById("copyButton").addEventListener("click", () => {
+            const linkInput = document.getElementById("referralLink");
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+
+            alert("Referral link copied to clipboard!");
+        });
+    </script>
+
     <script src="material/js/cojs.js"></script>
     <script src="material/js/scripts.js"></script>
 </body>
