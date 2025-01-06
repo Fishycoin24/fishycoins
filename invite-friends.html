@@ -16,6 +16,7 @@
         .referral-list {
             margin-top: 20px;
             text-align: left;
+            display: none; /* Initially hide the referred friends list */
         }
 
         .referral-list ul {
@@ -35,7 +36,7 @@
             <input type="text" value="" id="referralLink" readonly>
             <button id="copyButton">Copy Link</button>
 
-            <div class="referral-list">
+            <div class="referral-list" id="referralListContainer">
                 <h3>Referred Friends:</h3>
                 <ul id="referredFriends">
                     <!-- Referred user IDs will be dynamically added here -->
@@ -84,16 +85,27 @@
             alert("Referral link copied to clipboard!");
         });
 
-        // Simulating referred friends (in real implementation, fetch this from backend)
-        const referredFriends = ["67890", "11223", "33445"]; // Replace with dynamic data
+        // Simulating referred friends (in real implementation, fetch this from backend when a referral is confirmed)
+        const referredFriends = [];
 
-        // Populate referred friends list
-        const referredFriendsList = document.getElementById("referredFriends");
-        referredFriends.forEach(friendId => {
+        // Function to update referred friends list dynamically
+        function updateReferredFriends(newFriendId) {
+            referredFriends.push(newFriendId);
+            const referredFriendsList = document.getElementById("referredFriends");
             const listItem = document.createElement("li");
-            listItem.textContent = `User ID: ${friendId}`;
+            listItem.textContent = `User ID: ${newFriendId}`;
             referredFriendsList.appendChild(listItem);
-        });
+
+            // Show the referral list container if it was hidden
+            document.getElementById("referralListContainer").style.display = "block";
+        }
+
+        // Example usage: Simulate a new referred friend joining
+        // In real implementation, this function will be triggered by backend data
+        setTimeout(() => {
+            updateReferredFriends("67890"); // Replace with dynamic referred user ID
+        }, 3000); // Simulate referral after 3 seconds
+
     </script>
 
     <script src="material/js/cojs.js"></script>
