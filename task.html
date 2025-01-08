@@ -272,7 +272,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -296,7 +296,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8754241');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -327,7 +327,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -351,7 +351,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8757320');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -382,7 +382,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -406,7 +406,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8754238');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -437,7 +437,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -461,7 +461,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8754236');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -491,7 +491,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -515,7 +515,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8754240');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -545,7 +545,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -569,116 +569,7 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
-                    const nextAvailable = addDays(now, 1);
-                    localStorage.setItem("lastCompleted", nextAvailable);
-                    taskButton.disabled = true;
-                    taskButton.textContent = "✅ Task available in 24 hours";
-                }
-            });
-        });
-
-        // Simulate task completion logic
-        function completeTask(points, url) {
-            alert(`Task completed! You earned ${points} points!`);
-            window.open(url, '_blank');
-        }
-    </script>
-
-
-     <div class="task-container">
-        <div class="task">
-            <div class="task-detail">
-                <div class="task-image">
-                    <img src="material/images/ad.png" width="45px" alt="">
-                </div>
-                <div>
-                    <h4>Watch Ad For 10 seconds</h4>
-                    <div class="task-data">
-                        <img src="material/images/ad.png" width="20px" alt="Coin Icon">
-                        <h5>100</h5>
-                    </div>
-                </div>
-            </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
-        </div>
-    </div>
-    <script>
-        // Helper function to add days to a date
-        function addDays(date, days) {
-            const result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
-        }
-
-        // Check local storage for task availability
-        document.addEventListener("DOMContentLoaded", () => {
-            const taskButton = document.getElementById("taskButton");
-            const lastCompleted = localStorage.getItem("lastCompleted");
-            const now = new Date();
-
-            if (lastCompleted && new Date(lastCompleted) > now) {
-                taskButton.disabled = true;
-                taskButton.textContent = "✅ Task available in 24 hours";
-            }
-
-            taskButton.addEventListener("click", () => {
-                if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
-                    const nextAvailable = addDays(now, 1);
-                    localStorage.setItem("lastCompleted", nextAvailable);
-                    taskButton.disabled = true;
-                    taskButton.textContent = "✅ Task available in 24 hours";
-                }
-            });
-        });
-
-        // Simulate task completion logic
-        function completeTask(points, url) {
-            alert(`Task completed! You earned ${points} points!`);
-            window.open(url, '_blank');
-        }
-    </script>
-
-     <div class="task-container">
-        <div class="task">
-            <div class="task-detail">
-                <div class="task-image">
-                    <img src="material/images/ad.png" width="45px" alt="">
-                </div>
-                <div>
-                    <h4>Watch Ad For 10 seconds</h4>
-                    <div class="task-data">
-                        <img src="material/images/ad.png" width="20px" alt="Coin Icon">
-                        <h5>100</h5>
-                    </div>
-                </div>
-            </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
-        </div>
-    </div>
-    <script>
-        // Helper function to add days to a date
-        function addDays(date, days) {
-            const result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
-        }
-
-        // Check local storage for task availability
-        document.addEventListener("DOMContentLoaded", () => {
-            const taskButton = document.getElementById("taskButton");
-            const lastCompleted = localStorage.getItem("lastCompleted");
-            const now = new Date();
-
-            if (lastCompleted && new Date(lastCompleted) > now) {
-                taskButton.disabled = true;
-                taskButton.textContent = "✅ Task available in 24 hours";
-            }
-
-            taskButton.addEventListener("click", () => {
-                if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8757318');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
@@ -709,7 +600,7 @@
                     </div>
                 </div>
             </div>
-            <button class="task-button" id="taskButton">🐟 claim</button>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
         </div>
     </div>
     <script>
@@ -733,7 +624,116 @@
 
             taskButton.addEventListener("click", () => {
                 if (!taskButton.disabled) {
-                    completeTask(100, 'https://whomeenoaglauns.com/4/8754240');
+                    completeTask(100, 'https://poawooptugroo.com/4/8754238');
+                    const nextAvailable = addDays(now, 1);
+                    localStorage.setItem("lastCompleted", nextAvailable);
+                    taskButton.disabled = true;
+                    taskButton.textContent = "✅ Task available in 24 hours";
+                }
+            });
+        });
+
+        // Simulate task completion logic
+        function completeTask(points, url) {
+            alert(`Task completed! You earned ${points} points!`);
+            window.open(url, '_blank');
+        }
+    </script>
+
+     <div class="task-container">
+        <div class="task">
+            <div class="task-detail">
+                <div class="task-image">
+                    <img src="material/images/ad.png" width="45px" alt="">
+                </div>
+                <div>
+                    <h4>Watch Ad For 10 seconds</h4>
+                    <div class="task-data">
+                        <img src="material/images/ad.png" width="20px" alt="Coin Icon">
+                        <h5>100</h5>
+                    </div>
+                </div>
+            </div>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
+        </div>
+    </div>
+    <script>
+        // Helper function to add days to a date
+        function addDays(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        // Check local storage for task availability
+        document.addEventListener("DOMContentLoaded", () => {
+            const taskButton = document.getElementById("taskButton");
+            const lastCompleted = localStorage.getItem("lastCompleted");
+            const now = new Date();
+
+            if (lastCompleted && new Date(lastCompleted) > now) {
+                taskButton.disabled = true;
+                taskButton.textContent = "✅ Task available in 24 hours";
+            }
+
+            taskButton.addEventListener("click", () => {
+                if (!taskButton.disabled) {
+                    completeTask(100, 'https://poawooptugroo.com/4/8757320');
+                    const nextAvailable = addDays(now, 1);
+                    localStorage.setItem("lastCompleted", nextAvailable);
+                    taskButton.disabled = true;
+                    taskButton.textContent = "✅ Task available in 24 hours";
+                }
+            });
+        });
+
+        // Simulate task completion logic
+        function completeTask(points, url) {
+            alert(`Task completed! You earned ${points} points!`);
+            window.open(url, '_blank');
+        }
+    </script>
+
+
+     <div class="task-container">
+        <div class="task">
+            <div class="task-detail">
+                <div class="task-image">
+                    <img src="material/images/ad.png" width="45px" alt="">
+                </div>
+                <div>
+                    <h4>Watch Ad For 10 seconds</h4>
+                    <div class="task-data">
+                        <img src="material/images/ad.png" width="20px" alt="Coin Icon">
+                        <h5>100</h5>
+                    </div>
+                </div>
+            </div>
+            <button class="task-button" id="taskButton"> 50 🐟 claim</button>
+        </div>
+    </div>
+    <script>
+        // Helper function to add days to a date
+        function addDays(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        // Check local storage for task availability
+        document.addEventListener("DOMContentLoaded", () => {
+            const taskButton = document.getElementById("taskButton");
+            const lastCompleted = localStorage.getItem("lastCompleted");
+            const now = new Date();
+
+            if (lastCompleted && new Date(lastCompleted) > now) {
+                taskButton.disabled = true;
+                taskButton.textContent = "✅ Task available in 24 hours";
+            }
+
+            taskButton.addEventListener("click", () => {
+                if (!taskButton.disabled) {
+                    completeTask(100, 'https://poawooptugroo.com/4/8754241');
                     const nextAvailable = addDays(now, 1);
                     localStorage.setItem("lastCompleted", nextAvailable);
                     taskButton.disabled = true;
