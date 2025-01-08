@@ -258,11 +258,12 @@
                         </div>
     
 
- <div id="tasks"> 
+<div id="tasks"> 
     <!-- Tasks will be dynamically injected here -->
 </div>
 
 <script>
+    // Task data
     const tasks = [
         { id: 'task1', points: 50, url: 'https://poawooptugroo.com/4/8754241', description: 'Watch Ad for 10 seconds' },
         { id: 'task2', points: 50, url: 'https://poawooptugroo.com/4/8757320', description: 'Watch Ad for 10 seconds' },
@@ -276,12 +277,14 @@
         { id: 'task10', points: 50, url: 'https://poawooptugroo.com/4/8754236', description: 'Watch Ad for 10 seconds' }
     ];
 
+    // Add days to a date
     function addDays(date, days) {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     }
 
+    // Initialize tasks
     function initializeTasks() {
         const taskContainer = document.getElementById('tasks');
 
@@ -297,7 +300,7 @@
                         <div>
                             <h4>${task.description}</h4>
                             <div class="task-data">
-                                <img src="material/images/logo.png" width="20px" alt="Coin Icon">
+                                <img src="material/images/ad.png" width="20px" alt="Coin Icon">
                                 <h5>${task.points}</h5>
                             </div>
                         </div>
@@ -307,18 +310,20 @@
             `;
             taskContainer.appendChild(taskDiv);
 
-            // Task Button Initialization
+            // Manage button behavior
             const button = document.getElementById(`${task.id}Button`);
             const lastCompleted = localStorage.getItem(`${task.id}LastCompleted`);
             const now = new Date();
 
-            // Check if task is locked
+            // Check if the task is locked
             if (lastCompleted && new Date(lastCompleted) > now) {
                 button.disabled = true;
-                button.textContent = "✅ Task available in 24 hours";
+                const availableDate = new Date(lastCompleted);
+                const hoursLeft = Math.ceil((availableDate - now) / (1000 * 60 * 60));
+                button.textContent = `✅ Task available in ${hoursLeft} hours`;
             }
 
-            // Button click event
+            // Handle button click
             button.addEventListener('click', () => {
                 if (!button.disabled) {
                     completeTask(task.id, task.points, task.url);
@@ -331,14 +336,16 @@
         });
     }
 
+    // Complete a task
     function completeTask(taskId, points, url) {
         alert(`Task "${taskId}" completed! You earned ${points} points!`);
         window.open(url, '_blank');
     }
 
-    // Initialize the tasks on DOM load
+    // Initialize tasks on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', initializeTasks);
 </script>
+
     
                  
                     </section>
