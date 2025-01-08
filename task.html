@@ -258,82 +258,88 @@
                         </div>
     
 
-   <div id="tasks">
-        <!-- Tasks will be dynamically injected here -->
-    </div>
+ <div id="tasks"> 
+    <!-- Tasks will be dynamically injected here -->
+</div>
 
-    <script>
-        const tasks = [
-            { id: 'task1', points: 50, url: 'https://poawooptugroo.com/4/8754241', description: 'Watch Ad for 10 seconds' },
-            { id: 'task2', points: 50, url: 'https://poawooptugroo.com/4/8757320', description: 'Watch Ad for 10 seconds' },
-            { id: 'task3', points: 50, url: 'https://poawooptugroo.com/4/8754238', description: 'Watch Ad for 10 seconds' },
-            { id: 'task4', points: 50, url: 'https://poawooptugroo.com/4/8757318', description: 'Watch Ad for 10 seconds' },
-            { id: 'task5', points: 50, url: 'https://poawooptugroo.com/4/8754241', description: 'Watch Ad for 10 seconds' },
-            { id: 'task6', points: 50, url: 'https://poawooptugroo.com/4/8754240', description: 'Watch Ad for 10 seconds' },
-            { id: 'task7', points: 50, url: 'https://poawooptugroo.com/4/8757318', description: 'Watch Ad for 10 seconds' },
-            { id: 'task8', points: 50, url: 'https://poawooptugroo.com/4/8754238', description: 'Watch Ad for 10 seconds' },
-            { id: 'task9', points: 50, url: 'https://poawooptugroo.com/4/8754240', description: 'Watch Ad for 10 seconds' },
-            { id: 'task10', points: 50, url: 'https://poawooptugroo.com/4/8754236', description: 'Watch Ad for 10 seconds' }
-        ];
+<script>
+    const tasks = [
+        { id: 'task1', points: 50, url: 'https://poawooptugroo.com/4/8754241', description: 'Watch Ad for 10 seconds' },
+        { id: 'task2', points: 50, url: 'https://poawooptugroo.com/4/8757320', description: 'Watch Ad for 10 seconds' },
+        { id: 'task3', points: 50, url: 'https://poawooptugroo.com/4/8754238', description: 'Watch Ad for 10 seconds' },
+        { id: 'task4', points: 50, url: 'https://poawooptugroo.com/4/8757318', description: 'Watch Ad for 10 seconds' },
+        { id: 'task5', points: 50, url: 'https://poawooptugroo.com/4/8754241', description: 'Watch Ad for 10 seconds' },
+        { id: 'task6', points: 50, url: 'https://poawooptugroo.com/4/8754240', description: 'Watch Ad for 10 seconds' },
+        { id: 'task7', points: 50, url: 'https://poawooptugroo.com/4/8757318', description: 'Watch Ad for 10 seconds' },
+        { id: 'task8', points: 50, url: 'https://poawooptugroo.com/4/8754238', description: 'Watch Ad for 10 seconds' },
+        { id: 'task9', points: 50, url: 'https://poawooptugroo.com/4/8754240', description: 'Watch Ad for 10 seconds' },
+        { id: 'task10', points: 50, url: 'https://poawooptugroo.com/4/8754236', description: 'Watch Ad for 10 seconds' }
+    ];
 
-        function addDays(date, days) {
-            const result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
-        }
+    function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
 
-        function initializeTasks() {
-            const taskContainer = document.getElementById('tasks');
-            tasks.forEach(task => {
-                const taskDiv = document.createElement('div');
-                taskDiv.classList.add('task-container');
-                taskDiv.innerHTML = `
-                    <div class="task">
-                        <div class="task-detail">
-                            <div class="task-image">
-                                <img src="material/images/ad.png" width="45px" alt="">
-                            </div>
-                            <div>
-                                <h4>${task.description}</h4>
-                                <div class="task-data">
-                                    <img src="material/images/ad.png" width="20px" alt="Coin Icon">
-                                    <h5>${task.points}</h5>
-                                </div>
+    function initializeTasks() {
+        const taskContainer = document.getElementById('tasks');
+
+        tasks.forEach(task => {
+            const taskDiv = document.createElement('div');
+            taskDiv.classList.add('task-container');
+            taskDiv.innerHTML = `
+                <div class="task">
+                    <div class="task-detail">
+                        <div class="task-image">
+                            <img src="material/images/ad.png" width="45px" alt="Ad">
+                        </div>
+                        <div>
+                            <h4>${task.description}</h4>
+                            <div class="task-data">
+                                <img src="material/images/ad.png" width="20px" alt="Coin Icon">
+                                <h5>${task.points}</h5>
                             </div>
                         </div>
-                        <button class="task-button" id="${task.id}Button">🐟 claim</button>
                     </div>
-                `;
-                taskContainer.appendChild(taskDiv);
+                    <button class="task-button" id="${task.id}Button">🐟 claim</button>
+                </div>
+            `;
+            taskContainer.appendChild(taskDiv);
 
-                const button = document.getElementById(`${task.id}Button`);
-                const lastCompleted = localStorage.getItem(`${task.id}LastCompleted`);
-                const now = new Date();
+            // Task Button Initialization
+            const button = document.getElementById(`${task.id}Button`);
+            const lastCompleted = localStorage.getItem(`${task.id}LastCompleted`);
+            const now = new Date();
 
-                if (lastCompleted && new Date(lastCompleted) > now) {
+            // Check if task is locked
+            if (lastCompleted && new Date(lastCompleted) > now) {
+                button.disabled = true;
+                button.textContent = "✅ Task available in 24 hours";
+            }
+
+            // Button click event
+            button.addEventListener('click', () => {
+                if (!button.disabled) {
+                    completeTask(task.id, task.points, task.url);
+                    const nextAvailable = addDays(now, 1);
+                    localStorage.setItem(`${task.id}LastCompleted`, nextAvailable.toISOString());
                     button.disabled = true;
                     button.textContent = "✅ Task available in 24 hours";
                 }
-
-                button.addEventListener('click', () => {
-                    if (!button.disabled) {
-                        completeTask(task.id, task.points, task.url);
-                        const nextAvailable = addDays(now, 1);
-                        localStorage.setItem(`${task.id}LastCompleted`, nextAvailable);
-                        button.disabled = true;
-                        button.textContent = "✅ Task available in 24 hours";
-                    }
-                });
             });
-        }
+        });
+    }
 
-        function completeTask(taskId, points, url) {
-            alert(`Task "${taskId}" completed! You earned ${points} points!`);
-            window.open(url, '_blank');
-        }
+    function completeTask(taskId, points, url) {
+        alert(`Task "${taskId}" completed! You earned ${points} points!`);
+        window.open(url, '_blank');
+    }
 
-        document.addEventListener('DOMContentLoaded', initializeTasks);
-    </script>
+    // Initialize the tasks on DOM load
+    document.addEventListener('DOMContentLoaded', initializeTasks);
+</script>
+    
                  
                     </section>
 
