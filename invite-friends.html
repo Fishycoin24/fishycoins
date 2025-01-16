@@ -5,18 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invite Friends</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="material/css/styles.css">
-    <link rel="stylesheet" href="material/css/st.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         .referral-container {
             margin: 20px;
             text-align: center;
         }
 
+        #referralLink {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #copyButton {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #copyButton:hover {
+            background-color: #0056b3;
+        }
+
         .referral-list {
             margin-top: 20px;
             text-align: left;
-            display: none; /* Initially hide the referred friends list */
+            display: none;
         }
 
         .referral-list ul {
@@ -27,21 +53,46 @@
         .referral-list li {
             margin: 5px 0;
         }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item span {
+            display: block;
+            font-size: 12px;
+        }
+
+        .nav-item:hover {
+            color: #007BFF;
+        }
     </style>
 </head>
 <body>
-    <div class="frens-invite">
-        <div class="frens-invite-button referral-container">
-            <p>Your unique referral link:</p>
-            <input type="text" value="" id="referralLink" readonly>
-            <button id="copyButton">Copy Link</button>
+    <div class="referral-container">
+        <p>Your unique referral link:</p>
+        <input type="text" value="https://example.com/referral?ref=USER_ID" id="referralLink" readonly>
+        <button id="copyButton">Copy Link</button>
 
-            <div class="referral-list" id="referralListContainer">
-                <h3>Referred Friends:</h3>
-                <ul id="referredFriends">
-                    <!-- Referred user IDs will be dynamically added here -->
-                </ul>
-            </div>
+        <div class="referral-list" id="referralListContainer">
+            <h3>Referred Friends:</h3>
+            <ul id="referredFriends"></ul>
         </div>
     </div>
 
@@ -69,46 +120,33 @@
     </nav>
 
     <script>
-        // Simulating user ID (in real implementation, fetch this from backend)
-        const userId = "12345"; // Replace with dynamic user ID
-        const referralBaseURL = "https://t.me/fishycion_bot?ref=";
-
-        // Generate referral link
-        const referralLink = `${referralBaseURL}${userId}`;
-        document.getElementById("referralLink").value = referralLink;
-
-        // Copy referral link to clipboard
-        document.getElementById("copyButton").addEventListener("click", () => {
-            const linkInput = document.getElementById("referralLink");
-            linkInput.select();
-            document.execCommand("copy");
-            alert("Referral link copied to clipboard!");
+        document.getElementById('copyButton').addEventListener('click', () => {
+            const referralLink = document.getElementById('referralLink');
+            referralLink.select();
+            referralLink.setSelectionRange(0, 99999); // For mobile compatibility
+            document.execCommand('copy');
+            alert('Referral link copied to clipboard!');
         });
 
-        // Simulating referred friends (in real implementation, fetch this from backend when a referral is confirmed)
-        const referredFriends = [];
+        // Fetch referred friends dynamically
+        async function fetchReferredFriends() {
+            const userId = 'USER_ID'; // Replace with actual user ID logic
+            const response = await fetch(`/api/referrals?userId=${userId}`);
+            const data = await response.json();
 
-        // Function to update referred friends list dynamically
-        function updateReferredFriends(newFriendId) {
-            referredFriends.push(newFriendId);
-            const referredFriendsList = document.getElementById("referredFriends");
-            const listItem = document.createElement("li");
-            listItem.textContent = `User ID: ${newFriendId}`;
-            referredFriendsList.appendChild(listItem);
-
-            // Show the referral list container if it was hidden
-            document.getElementById("referralListContainer").style.display = "block";
+            if (data.referrals) {
+                const referralList = document.getElementById('referredFriends');
+                referralList.innerHTML = '';
+                data.referrals.forEach(friend => {
+                    const li = document.createElement('li');
+                    li.textContent = `Friend ID: ${friend}`;
+                    referralList.appendChild(li);
+                });
+                document.getElementById('referralListContainer').style.display = 'block';
+            }
         }
 
-        // Example usage: Simulate a new referred friend joining
-        // In real implementation, this function will be triggered by backend data
-        setTimeout(() => {
-            updateReferredFriends("67890"); // Replace with dynamic referred user ID
-        }, 3000); // Simulate referral after 3 seconds
-
+        fetchReferredFriends();
     </script>
-
-    <script src="material/js/cojs.js"></script>
-    <script src="material/js/scripts.js"></script>
 </body>
 </html>
