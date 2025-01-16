@@ -1,60 +1,67 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
 
 const app = express();
+const apiToken = "8123439232:AAEZmsL9D5JPfccjcs16gIO3IcQeLrvTaSo";
+const botUrl = `https://api.telegram.org/bot${apiToken}`;
+
 app.use(bodyParser.json());
 
-// Replace with your API token
-const botToken = '8123439232:AAEZmsL9D5JPfccjcs16gIO3IcQeLrvTaSo';
-const bot = new TelegramBot(botToken, { polling: true });
+// Save referral data
+let referrals = {};
 
-// Mock Database
-const users = {}; // { userId: { referrer: referrerId, referrals: [] } }
+// Handle updates from Telegram Bot
+app.post('/webhook', async (req, res) => {
+    const update = req.body;
 
-// API to provide the user ID
-app.get('/api/getUserId', (req, res) => {
-    // Simulate fetching the logged-in user ID (e.g., from session or JWT)
-    const userId = req.query.userId || '12345'; // Replace with actual user logic
-    res.json({ userId });
-});
+    if (update.message && update.message.text.startsWith('/start')) {
+        const referrerId = update.message.text.split(' ')[1]; // Extract referrer ID
+        const referredUserId = update.message.chat.id;
 
-// Handle Telegram Bot /start command
-bot.onText(/\/start (.+)/, (msg, match) => {
-    const referrerId = match[1];
-    const userId = msg.from.id;
+        if (referrerId && referredUserId) {
+            if (!referrals[referrerId]) {
+                referrals[referrerId] = [];
+            }
 
-    if (!users[userId]) {
-        users[userId] = { referrer: referrerId, referrals: [] };
+            // Add the referred user to the referrer's list
+            referrals[referrerId].push(referredUserId);
 
-        // Add the user to the referrer's referral list
-        if (users[referrerId]) {
-            users[referrerId].referrals.push(userId);
+            // Notify the referrer
+            await axios.post(`${botUrl}/sendMessage`, {
+                chat_id: referrerId,
+                text: `You referred a new user: ${referredUserId}`
+            });
+
+            console.log(`Referral tracked: ${referrerId} -> ${referredUserId}`);
         }
+    }
 
-        bot.sendMessage(
-            userId,
-            `Welcome! You were referred by User ID: ${referrerId}. Start earning rewards!`
-        );
-    } else {
-        bot.sendMessage(userId, 'You are already registered.');
+    res.sendStatus(200);
+});
+
+// Fetch referrals for a specific user
+app.get('/referrals/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const userReferrals = referrals[userId] || [];
+    res.json({ referrals: userReferrals });
+});
+
+// Set webhook
+app.get('/setWebhook', async (req, res) => {
+    try {
+        const webhookUrl = "https://t.me/fishycoin_bot/webhook"; // Replace with your server URL
+        const response = await axios.post(`${botUrl}/setWebhook`, {
+            url: webhookUrl
+        });
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 
-// API to fetch referrals
-app.get('/api/getReferrals', (req, res) => {
-    const userId = req.query.userId;
-
-    if (!userId || !users[userId]) {
-        return res.status(400).json({ error: 'Invalid user ID' });
-    }
-
-    const { referrals } = users[userId];
-    res.json({ referrals });
-});
-
-// Start the server
-const PORT = 3000;
+// Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
