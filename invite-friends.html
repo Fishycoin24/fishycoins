@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invite Friends</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="material/css/styles.css">
-    <link rel="stylesheet" href="material/css/st.css">
     <style>
         .referral-container {
             margin: 20px;
@@ -16,7 +14,6 @@
         .referral-list {
             margin-top: 20px;
             text-align: left;
-            display: none; /* Initially hide the referred friends list */
         }
 
         .referral-list ul {
@@ -27,69 +24,36 @@
         .referral-list li {
             margin: 5px 0;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="frens-invite">
-        <div class="frens-invite-button referral-container">
+        <div class="referral-container">
             <p>Your unique referral link:</p>
             <input type="text" id="referralLink" readonly>
             <button id="copyButton">Copy Link</button>
 
-            <div class="referral-list" id="referralListContainer">
+            <div class="referral-list hidden" id="referralListContainer">
                 <h3>Referred Friends:</h3>
-                <ul id="referredFriends">
-                    <!-- Referred user IDs will be dynamically added here -->
-                </ul>
+                <ul id="referredFriends"></ul>
             </div>
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="home.html" class="nav-item">
-            <i class="fas fa-home"></i>
-            <span>HOME</span>
-        </a>
-        <a href="leaderboard.html" class="nav-item">
-            <i class="fas fa-trophy"></i>
-            <span>LEADERBOARD</span>
-        </a>
-        <a href="invite-friends.html" class="nav-item">
-            <i class="fas fa-user-friends"></i>
-            <span>FRIENDS</span>
-        </a>
-        <a href="task.html" class="nav-item">
-            <i class="fas fa-tasks"></i>
-            <span>TASKS</span>
-        </a>
-        <a href="balance.html" class="nav-item">
-            <i class="fas fa-wallet"></i>
-            <span>BALANCE</span>
-        </a>
-    </nav>
-
     <script>
-        // API base URL
-        const apiUrl = 'http://localhost:3000/api';
+        const apiToken = "8123439232:AAEZmsL9D5JPfccjcs16gIO3IcQeLrvTaSo";
+        const botUrl = `https://api.telegram.org/bot${apiToken}`;
+        const userId = "12345"; // Replace with actual logic to fetch user ID
 
-        // Fetch the user ID and generate the referral link
-        async function fetchReferralLink() {
-            try {
-                const response = await fetch(`${apiUrl}/getUserId`);
-                const data = await response.json();
+        // Generate referral link
+        const referralLink = `https://t.me/fishycoin_bot?start=${userId}`;
+        document.getElementById('referralLink').value = referralLink;
 
-                if (data.userId) {
-                    const referralLink = `https://t.me/fishycoin_bot?start=${data.userId}`;
-                    document.getElementById('referralLink').value = referralLink;
-                } else {
-                    console.error('User ID not found.');
-                }
-            } catch (error) {
-                console.error('Error fetching referral link:', error);
-            }
-        }
-
-        // Copy the referral link to the clipboard
+        // Copy referral link
         document.getElementById('copyButton').addEventListener('click', () => {
             const referralLinkInput = document.getElementById('referralLink');
             referralLinkInput.select();
@@ -97,8 +61,39 @@
             alert('Referral link copied to clipboard!');
         });
 
-        // Fetch the referral link on page load
-        document.addEventListener('DOMContentLoaded', fetchReferralLink);
+        // Fetch referred friends using Telegram API
+        async function fetchReferredFriends() {
+            try {
+                const response = await fetch(`${botUrl}/getUpdates`);
+                const data = await response.json();
+
+                if (data.ok) {
+                    const referredFriends = data.result.filter(update => 
+                        update.message && update.message.text.includes(`/start ${userId}`)
+                    );
+
+                    const referralListContainer = document.getElementById('referralListContainer');
+                    const referredFriendsList = document.getElementById('referredFriends');
+
+                    referredFriends.forEach(friend => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `User: ${friend.message.chat.username || 'Unknown'}`;
+                        referredFriendsList.appendChild(listItem);
+                    });
+
+                    if (referredFriends.length > 0) {
+                        referralListContainer.classList.remove('hidden');
+                    }
+                } else {
+                    console.error('Failed to fetch referrals:', data.description);
+                }
+            } catch (error) {
+                console.error('Error fetching referred friends:', error);
+            }
+        }
+
+        // Fetch referred friends on page load
+        document.addEventListener('DOMContentLoaded', fetchReferredFriends);
     </script>
 </body>
 </html>
