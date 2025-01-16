@@ -53,41 +53,12 @@
         .referral-list li {
             margin: 5px 0;
         }
-
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #f8f9fa;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: #6c757d;
-            text-decoration: none;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-        }
-
-        .nav-item span {
-            display: block;
-            font-size: 12px;
-        }
-
-        .nav-item:hover {
-            color: #007BFF;
-        }
     </style>
 </head>
 <body>
     <div class="referral-container">
         <p>Your unique referral link:</p>
-        <input type="text" value="https://t.me/fishycoin_bot/referral?ref=USER_ID" id="referralLink" readonly>
+        <input type="text" value="" id="referralLink" readonly>
         <button id="copyButton">Copy Link</button>
 
         <div class="referral-list" id="referralListContainer">
@@ -96,30 +67,24 @@
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="home.html" class="nav-item">
-            <i class="fas fa-home"></i>
-            <span>HOME</span>
-        </a>
-        <a href="leaderboard.html" class="nav-item">
-            <i class="fas fa-trophy"></i>
-            <span>LEADERBOARD</span>
-        </a>
-        <a href="invite-friends.html" class="nav-item">
-            <i class="fas fa-user-friends"></i>
-            <span>FRIENDS</span>
-        </a>
-        <a href="task.html" class="nav-item">
-            <i class="fas fa-tasks"></i>
-            <span>TASKS</span>
-        </a>
-        <a href="balance.html" class="nav-item">
-            <i class="fas fa-wallet"></i>
-            <span>BALANCE</span>
-        </a>
-    </nav>
-
     <script>
+        // Dynamically generate referral link based on user ID
+        async function generateReferralLink() {
+            try {
+                const response = await fetch('/api/getUserId');
+                const { userId } = await response.json();
+
+                if (userId) {
+                    const referralLink = `https://t.me/fishycoin_bot?start=${userId}`;
+                    document.getElementById('referralLink').value = referralLink;
+                } else {
+                    alert('Unable to fetch user ID. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error fetching user ID:', error);
+            }
+        }
+
         document.getElementById('copyButton').addEventListener('click', () => {
             const referralLink = document.getElementById('referralLink');
             referralLink.select();
@@ -130,22 +95,27 @@
 
         // Fetch referred friends dynamically
         async function fetchReferredFriends() {
-            const userId = 'USER_ID'; // Replace with actual user ID logic
-            const response = await fetch(`/api/referrals?userId=${userId}`);
-            const data = await response.json();
+            try {
+                const response = await fetch('/api/getReferrals');
+                const data = await response.json();
 
-            if (data.referrals) {
-                const referralList = document.getElementById('referredFriends');
-                referralList.innerHTML = '';
-                data.referrals.forEach(friend => {
-                    const li = document.createElement('li');
-                    li.textContent = `Friend ID: ${friend}`;
-                    referralList.appendChild(li);
-                });
-                document.getElementById('referralListContainer').style.display = 'block';
+                if (data.referrals) {
+                    const referralList = document.getElementById('referredFriends');
+                    referralList.innerHTML = '';
+                    data.referrals.forEach(friend => {
+                        const li = document.createElement('li');
+                        li.textContent = `Friend ID: ${friend}`;
+                        referralList.appendChild(li);
+                    });
+                    document.getElementById('referralListContainer').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error fetching referrals:', error);
             }
         }
 
+        // Initialize the referral link and referred friends
+        generateReferralLink();
         fetchReferredFriends();
     </script>
 </body>
