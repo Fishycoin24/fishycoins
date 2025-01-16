@@ -5,44 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invite Friends</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="material/css/styles.css">
+    <link rel="stylesheet" href="material/css/st.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
         .referral-container {
             margin: 20px;
             text-align: center;
         }
 
-        #referralLink {
-            width: 80%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #copyButton {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #copyButton:hover {
-            background-color: #0056b3;
-        }
-
         .referral-list {
             margin-top: 20px;
             text-align: left;
-            display: none;
+            display: none; /* Initially hide the referred friends list */
         }
 
         .referral-list ul {
@@ -56,67 +30,75 @@
     </style>
 </head>
 <body>
-    <div class="referral-container">
-        <p>Your unique referral link:</p>
-        <input type="text" value="" id="referralLink" readonly>
-        <button id="copyButton">Copy Link</button>
+    <div class="frens-invite">
+        <div class="frens-invite-button referral-container">
+            <p>Your unique referral link:</p>
+            <input type="text" id="referralLink" readonly>
+            <button id="copyButton">Copy Link</button>
 
-        <div class="referral-list" id="referralListContainer">
-            <h3>Referred Friends:</h3>
-            <ul id="referredFriends"></ul>
+            <div class="referral-list" id="referralListContainer">
+                <h3>Referred Friends:</h3>
+                <ul id="referredFriends">
+                    <!-- Referred user IDs will be dynamically added here -->
+                </ul>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Dynamically generate referral link based on user ID
-        async function generateReferralLink() {
-            try {
-                const response = await fetch('/api/getUserId');
-                const { userId } = await response.json();
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>HOME</span>
+        </a>
+        <a href="leaderboard.html" class="nav-item">
+            <i class="fas fa-trophy"></i>
+            <span>LEADERBOARD</span>
+        </a>
+        <a href="invite-friends.html" class="nav-item">
+            <i class="fas fa-user-friends"></i>
+            <span>FRIENDS</span>
+        </a>
+        <a href="task.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>TASKS</span>
+        </a>
+        <a href="balance.html" class="nav-item">
+            <i class="fas fa-wallet"></i>
+            <span>BALANCE</span>
+        </a>
+    </nav>
 
-                if (userId) {
-                    const referralLink = `https://t.me/fishycoin_bot?start=${userId}`;
+    <script>
+        // API base URL
+        const apiUrl = 'http://localhost:3000/api';
+
+        // Fetch the user ID and generate the referral link
+        async function fetchReferralLink() {
+            try {
+                const response = await fetch(`${apiUrl}/getUserId`);
+                const data = await response.json();
+
+                if (data.userId) {
+                    const referralLink = `https://t.me/fishycoin_bot?start=${data.userId}`;
                     document.getElementById('referralLink').value = referralLink;
                 } else {
-                    alert('Unable to fetch user ID. Please try again.');
+                    console.error('User ID not found.');
                 }
             } catch (error) {
-                console.error('Error fetching user ID:', error);
+                console.error('Error fetching referral link:', error);
             }
         }
 
+        // Copy the referral link to the clipboard
         document.getElementById('copyButton').addEventListener('click', () => {
-            const referralLink = document.getElementById('referralLink');
-            referralLink.select();
-            referralLink.setSelectionRange(0, 99999); // For mobile compatibility
+            const referralLinkInput = document.getElementById('referralLink');
+            referralLinkInput.select();
             document.execCommand('copy');
             alert('Referral link copied to clipboard!');
         });
 
-        // Fetch referred friends dynamically
-        async function fetchReferredFriends() {
-            try {
-                const response = await fetch('/api/getReferrals');
-                const data = await response.json();
-
-                if (data.referrals) {
-                    const referralList = document.getElementById('referredFriends');
-                    referralList.innerHTML = '';
-                    data.referrals.forEach(friend => {
-                        const li = document.createElement('li');
-                        li.textContent = `Friend ID: ${friend}`;
-                        referralList.appendChild(li);
-                    });
-                    document.getElementById('referralListContainer').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error fetching referrals:', error);
-            }
-        }
-
-        // Initialize the referral link and referred friends
-        generateReferralLink();
-        fetchReferredFriends();
+        // Fetch the referral link on page load
+        document.addEventListener('DOMContentLoaded', fetchReferralLink);
     </script>
 </body>
 </html>
