@@ -12,8 +12,11 @@
     <div class="frens-invite">
         <div class="referral-container">
             <p>Your unique referral link:</p>
-            <input type="text" id="referralLink" readonly>
+            <input type="text" id="referralLink" readonly value="https://t.me/fishycoin_bot?start=">
             <button id="copyButton">Copy Link</button>
+            <p id="copyMessage" class="hidden">Link copied to clipboard!</p>
+
+            <button id="inviteButton">Invite Friends</button> <!-- Added invite button -->
 
             <div class="referral-list hidden" id="referralListContainer">
                 <h3>Referred Friends:</h3>
@@ -21,30 +24,8 @@
             </div>
         </div>
     </div>
-  <script>
     
-    var chatId = "<?php echo isset($_GET['chat_id']) ? htmlspecialchars($_GET['chat_id']) : ''; ?>";
-    
-    document.getElementById('inviteButton').addEventListener('click', function() {
-    
-      const textToCopy = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20FishyCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!";
-      
-      navigator.clipboard.writeText(textToCopy).then(function() {
-        const copyMessage = document.getElementById('copyMessage');
-        copyMessage.classList.remove('hidden');
-        copyMessage.classList.add('block');
-
-        setTimeout(function() {
-          copyMessage.classList.remove('block');
-          copyMessage.classList.add('hidden');
-          window.location = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20FishyCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!"
-        }, 2000);
-      }).catch(function(err) {
-        console.error('Error in copying text: ', err);
-      });
-    });
-  </script>
-     <nav class="bottom-nav">
+    <nav class="bottom-nav">
         <a href="home.html" class="nav-item">
             <i class="fas fa-home"></i>
             <span>HOME</span>
@@ -66,6 +47,31 @@
             <span>BALANCE</span>
         </a>
     </nav>
+
+      <script>
+    
+    var chatId = "<?php echo isset($_GET['chat_id']) ? htmlspecialchars($_GET['chat_id']) : ''; ?>";
+    
+    document.getElementById('inviteButton').addEventListener('click', function() {
+    
+      const textToCopy = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!";
+      
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        const copyMessage = document.getElementById('copyMessage');
+        copyMessage.classList.remove('hidden');
+        copyMessage.classList.add('block');
+
+        setTimeout(function() {
+          copyMessage.classList.remove('block');
+          copyMessage.classList.add('hidden');
+          window.location = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!"
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Error in copying text: ', err);
+      });
+    });
+  </script>
+
     <script src="material/js/cojs.js"></script>
     <script src="material/js/scripts.js"></script>
 </body>
