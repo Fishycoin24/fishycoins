@@ -21,81 +21,29 @@
             </div>
         </div>
     </div>
+  <script>
+    
+    var chatId = "<?php echo isset($_GET['chat_id']) ? htmlspecialchars($_GET['chat_id']) : ''; ?>";
+    
+    document.getElementById('inviteButton').addEventListener('click', function() {
+    
+      const textToCopy = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!";
+      
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        const copyMessage = document.getElementById('copyMessage');
+        copyMessage.classList.remove('hidden');
+        copyMessage.classList.add('block');
 
-    <script>
-        const apiToken = "8123439232:AAEZmsL9D5JPfccjcs16gIO3IcQeLrvTaSo";
-        const botUrl = `https://api.telegram.org/bot${apiToken}`;
-
-        async function fetchUserId() {
-            try {
-                const response = await fetch(`${botUrl}/getMe`);
-                const data = await response.json();
-                if (data.ok) {
-                    return data.result.id; // Bot's user ID
-                } else {
-                    throw new Error(data.description);
-                }
-            } catch (error) {
-                console.error("Error fetching user ID:", error);
-                return null;
-            }
-        }
-
-        // Generate and display the referral link
-        async function generateReferralLink() {
-            const userId = await fetchUserId();
-            if (userId) {
-                const referralLink = `https://t.me/fishycoin_bot?start=${userId}`;
-                document.getElementById('referralLink').value = referralLink;
-
-                // Enable the copy button functionality
-                document.getElementById('copyButton').addEventListener('click', () => {
-                    const referralLinkInput = document.getElementById('referralLink');
-                    referralLinkInput.select();
-                    document.execCommand('copy');
-                    alert('Referral link copied to clipboard!');
-                });
-
-                fetchReferredFriends(userId);
-            } else {
-                alert("Failed to generate referral link.");
-            }
-        }
-
-        // Fetch referred friends
-        async function fetchReferredFriends(userId) {
-            try {
-                const response = await fetch(`${botUrl}/getUpdates`);
-                const data = await response.json();
-
-                if (data.ok) {
-                    const referredFriends = data.result.filter(update =>
-                        update.message && update.message.text.includes(`/start ${userId}`)
-                    );
-
-                    const referralListContainer = document.getElementById('referralListContainer');
-                    const referredFriendsList = document.getElementById('referredFriends');
-
-                    referredFriends.forEach(friend => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = `User: ${friend.message.chat.username || 'Unknown'}`;
-                        referredFriendsList.appendChild(listItem);
-                    });
-
-                    if (referredFriends.length > 0) {
-                        referralListContainer.classList.remove('hidden');
-                    }
-                } else {
-                    console.error('Failed to fetch referrals:', data.description);
-                }
-            } catch (error) {
-                console.error('Error fetching referred friends:', error);
-            }
-        }
-
-        // Initialize referral link generation on page load
-        document.addEventListener('DOMContentLoaded', generateReferralLink);
-    </script>
+        setTimeout(function() {
+          copyMessage.classList.remove('block');
+          copyMessage.classList.add('hidden');
+          window.location = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!"
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Error in copying text: ', err);
+      });
+    });
+  </script>
      <nav class="bottom-nav">
         <a href="home.html" class="nav-item">
             <i class="fas fa-home"></i>
