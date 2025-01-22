@@ -27,7 +27,7 @@
     
     document.getElementById('inviteButton').addEventListener('click', function() {
     
-      const textToCopy = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!";
+      const textToCopy = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20FishyCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!";
       
       navigator.clipboard.writeText(textToCopy).then(function() {
         const copyMessage = document.getElementById('copyMessage');
@@ -37,7 +37,7 @@
         setTimeout(function() {
           copyMessage.classList.remove('block');
           copyMessage.classList.add('hidden');
-          window.location = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!"
+          window.location = "https://t.me/share/url?url=https://t.me/fishycoin_bot?start=" + chatId + "&text=Join%20me%20in%20FishyCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!"
         }, 2000);
       }).catch(function(err) {
         console.error('Error in copying text: ', err);
