@@ -7,12 +7,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="material/css/styles.css">
     <link rel="stylesheet" href="material/css/st.css">
+    <style>
+        .hidden { display: none; }
+        .block { display: block; color: green; margin-top: 10px; }
+    </style>
 </head>
 <body>
     <div class="frens-invite">
         <div class="referral-container">
             <p>Your unique referral link:</p>
-            <input type="text" id="referralLink" readonly value="https://t.me/fishycoin_bot?start=">
+            <input type="text" id="referralLink" readonly value="">
             <button id="copyButton">Copy Link</button>
             <p id="copyMessage" class="hidden">Link copied to clipboard!</p>
 
@@ -49,21 +53,22 @@
     </nav>
 
     <script>
-        // Get the chat ID from PHP
-        const chatId = "<?php echo isset($_GET['chat_id']) ? htmlspecialchars($_GET['chat_id']) : ''; ?>";
+        // Fetch the chat ID from the URL or set a default value
+        const urlParams = new URLSearchParams(window.location.search);
+        const chatId = urlParams.get('chat_id') || 'defaultChatId';
 
-        // Update the referral link dynamically
+        // Update referral link input
+        const referralLink = `https://t.me/fishycoin_bot?start=${chatId}`;
         const referralInput = document.getElementById('referralLink');
-        referralInput.value += chatId;
+        referralInput.value = referralLink;
 
         // Copy referral link to clipboard
-        document.getElementById('copyButton').addEventListener('click', function() {
+        document.getElementById('copyButton').addEventListener('click', function () {
             navigator.clipboard.writeText(referralInput.value)
                 .then(() => {
                     const copyMessage = document.getElementById('copyMessage');
                     copyMessage.classList.remove('hidden');
                     copyMessage.classList.add('block');
-
                     setTimeout(() => {
                         copyMessage.classList.remove('block');
                         copyMessage.classList.add('hidden');
@@ -75,10 +80,10 @@
                 });
         });
 
-        // Invite button logic
-        document.getElementById('inviteButton').addEventListener('click', function() {
-            const inviteLink = `https://t.me/share/url?url=https://t.me/fishycoin_bot?start=${chatId}&text=Join%20me%20in%20FishyCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!`;
-            window.location.href = inviteLink;
+        // Redirect to share link on invite button click
+        document.getElementById('inviteButton').addEventListener('click', function () {
+            const shareLink = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!`;
+            window.location.href = shareLink;
         });
     </script>
 
