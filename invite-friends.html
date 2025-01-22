@@ -10,15 +10,17 @@
     <style>
         .hidden { display: none; }
         .block { display: block; color: green; margin-top: 10px; }
+        .error { color: red; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="frens-invite">
         <div class="referral-container">
             <p>Your unique referral link:</p>
-            <input type="text" id="referralLink" readonly value="">
+            <input type="text" id="referralLink" readonly>
             <button id="copyButton">Copy Link</button>
             <p id="copyMessage" class="hidden">Link copied to clipboard!</p>
+            <p id="errorMessage" class="hidden error">Unable to generate referral link. Please check the URL.</p>
 
             <button id="inviteButton">Invite Friends</button>
 
@@ -53,37 +55,49 @@
     </nav>
 
     <script>
-        // Fetch the chat ID from the URL or set a default value
-        const urlParams = new URLSearchParams(window.location.search);
-        const chatId = urlParams.get('chat_id') || 'defaultChatId';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get chat ID from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const chatId = urlParams.get('chat_id');
 
-        // Update referral link input
-        const referralLink = `https://t.me/fishycoin_bot?start=${chatId}`;
-        const referralInput = document.getElementById('referralLink');
-        referralInput.value = referralLink;
+            const referralInput = document.getElementById('referralLink');
+            const copyMessage = document.getElementById('copyMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const inviteButton = document.getElementById('inviteButton');
 
-        // Copy referral link to clipboard
-        document.getElementById('copyButton').addEventListener('click', function () {
-            navigator.clipboard.writeText(referralInput.value)
-                .then(() => {
-                    const copyMessage = document.getElementById('copyMessage');
-                    copyMessage.classList.remove('hidden');
-                    copyMessage.classList.add('block');
-                    setTimeout(() => {
-                        copyMessage.classList.remove('block');
-                        copyMessage.classList.add('hidden');
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy text:', err);
-                    alert('Error copying link. Please try again.');
+            // Validate chat ID and update referral link
+            if (chatId) {
+                const referralLink = `https://t.me/fishycoin_bot?start=${chatId}`;
+                referralInput.value = referralLink;
+
+                // Copy referral link to clipboard
+                document.getElementById('copyButton').addEventListener('click', function () {
+                    navigator.clipboard.writeText(referralInput.value)
+                        .then(() => {
+                            copyMessage.classList.remove('hidden');
+                            copyMessage.classList.add('block');
+                            setTimeout(() => {
+                                copyMessage.classList.remove('block');
+                                copyMessage.classList.add('hidden');
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy text:', err);
+                            alert('Error copying link. Please try again.');
+                        });
                 });
-        });
 
-        // Redirect to share link on invite button click
-        document.getElementById('inviteButton').addEventListener('click', function () {
-            const shareLink = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!`;
-            window.location.href = shareLink;
+                // Redirect to share link on invite button click
+                inviteButton.addEventListener('click', function () {
+                    const shareLink = `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=Join%20me%20in%20pandaCoin%20and%20start%20mining%20today!%20Let's%20earn%20together!`;
+                    window.location.href = shareLink;
+                });
+            } else {
+                // Show error if chat ID is missing
+                errorMessage.classList.remove('hidden');
+                referralInput.value = 'Chat ID missing. Unable to generate referral link.';
+                inviteButton.disabled = true;
+            }
         });
     </script>
 
